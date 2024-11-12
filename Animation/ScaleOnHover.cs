@@ -15,6 +15,13 @@ public sealed class ScaleOnHover
 
     [Header("Configs")]
     [SerializeField]
+    [Range(0f, 1f)]
+    private float timeHide = 0.25f;
+
+    [SerializeField]
+    private Ease easeHide = Ease.OutExpo;
+
+    [SerializeField]
     [Range(1, 2f)]
     private float scaleBy = 1.2f;
     private Vector3 originalScale;

@@ -17,15 +17,20 @@ public abstract class TweenOnBase : MonoBehaviour
     [SerializeField]
     protected Ease easeShow = Ease.OutExpo;
 
-    [SerializeField]
-    protected Ease easeHide = Ease.OutExpo;
-
     [Header("Times")]
     [Range(0f, 1f)]
     [SerializeField]
     protected float timeShow = 0.4f;
+}
 
-    [Range(0f, 1f)]
-    [SerializeField]
-    protected float timeHide = 0.25f;
+public enum DirectionX
+{
+    Right = -1,
+    Left = 1
+}
+
+public enum DirectionY
+{
+    Up = -1,
+    Down = 1
 }
