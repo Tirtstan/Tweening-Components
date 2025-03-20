@@ -2,59 +2,55 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public sealed class ScaleOnHover
-    : TweenOnBase,
-        IPointerEnterHandler,
-        IPointerExitHandler,
-        ISelectHandler,
-        IDeselectHandler
+namespace Tweening
 {
-    [Header("Components")]
-    [SerializeField]
-    private Transform scalingObject;
-
-    [Header("Configs")]
-    [SerializeField]
-    [Range(0f, 1f)]
-    private float timeHide = 0.25f;
-
-    [SerializeField]
-    private Ease easeHide = Ease.OutExpo;
-
-    [SerializeField]
-    [Range(1, 2f)]
-    private float scaleBy = 1.2f;
-    private Vector3 originalScale;
-
-    private void Awake()
+    public sealed class ScaleOnHover
+        : TweenOnBase,
+            IPointerEnterHandler,
+            IPointerExitHandler,
+            ISelectHandler,
+            IDeselectHandler
     {
-        originalScale = scalingObject.localScale;
-    }
+        [Header("Components")]
+        [SerializeField]
+        private Transform scalingObject;
 
-    public void OnPointerEnter(PointerEventData eventData) => Scale();
+        [Header("Configs")]
+        [SerializeField]
+        [Range(1, 2f)]
+        private float scaleBy = 1.2f;
+        private Vector3 originalScale;
 
-    public void OnSelect(BaseEventData eventData) => Scale();
+        public override void AwakeTween()
+        {
+            setInactiveOnComplete = false;
+            originalScale = scalingObject.localScale;
+        }
 
-    public void OnPointerExit(PointerEventData eventData) => ReturnToDefault();
+        public void OnPointerEnter(PointerEventData eventData) => AnimateIn();
 
-    public void OnDeselect(BaseEventData eventData) => ReturnToDefault();
+        public void OnSelect(BaseEventData eventData) => AnimateIn();
 
-    private void Scale()
-    {
-        scalingObject.DOKill();
-        scalingObject.DOScale(originalScale * scaleBy, timeShow).SetEase(easeShow);
-    }
+        public void OnPointerExit(PointerEventData eventData) => AnimateOut();
 
-    private void ReturnToDefault()
-    {
-        scalingObject.DOKill();
-        scalingObject.DOScale(originalScale, timeHide).SetEase(easeHide);
-    }
+        public void OnDeselect(BaseEventData eventData) => AnimateOut();
 
-    private void OnDisable() => ReturnToDefault();
+        public override void AnimateIn()
+        {
+            base.AnimateIn();
+            ShowSeq.Append(scalingObject.DOScale(originalScale * scaleBy, timeShow).SetEase(easeShow));
+        }
 
-    private void OnDestroy()
-    {
-        scalingObject.DOKill(true);
+        public override void AnimateOut()
+        {
+            base.AnimateOut();
+            HideSeq.Append(scalingObject.DOScale(originalScale, timeHide).SetEase(easeHide));
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            scalingObject.localScale = originalScale;
+        }
     }
 }
