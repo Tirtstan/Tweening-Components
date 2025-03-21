@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Tweening
 {
     /// <summary>
@@ -8,10 +10,7 @@ namespace Tweening
         /// <summary>
         /// Prepares the tweening animation.
         /// </summary>
-        /// <remarks>
-        /// Implement and assign default values for the tweening animation.
-        /// </remarks>
-        public abstract void AwakeTween();
+        public abstract void InitializeTween(RectTransform rect);
 
         /// <summary>
         /// Animates the object in to its scene-placed state.
@@ -27,10 +26,5 @@ namespace Tweening
         /// Replays the tweening animation using <see cref="AnimateIn"/> and <see cref="AnimateOut"/>.
         /// </summary>
         public void Replay();
-
-        /// <summary>
-        /// Similar to <see cref="AnimateOut"/>. Resets the object to its original state but with no animation.
-        /// </summary>
-        public void Reset();
     }
 }
