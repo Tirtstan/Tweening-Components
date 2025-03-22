@@ -4,7 +4,7 @@ namespace Tweening
     {
         Right = -1,
         Left = 1,
-        Up = -1,
-        Down = 1,
+        Up = -2,
+        Down = 2,
     }
 }

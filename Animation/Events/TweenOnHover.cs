@@ -3,6 +3,7 @@ using UnityEngine.EventSystems;
 
 namespace Tweening
 {
+    [DisallowMultipleComponent, AddComponentMenu("UI/Tweening/Tween On Hover")]
     public class TweenOnHover
         : TweenOnEventBase,
             IPointerEnterHandler,

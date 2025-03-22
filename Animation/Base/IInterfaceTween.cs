@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 namespace Tweening
@@ -8,23 +9,26 @@ namespace Tweening
     public interface IInterfaceTween
     {
         /// <summary>
-        /// Prepares the tweening animation.
+        /// Prepares the tweening animation using the provided <see cref="RectTransform"/>.
         /// </summary>
         public abstract void InitializeTween(RectTransform rect);
 
         /// <summary>
         /// Animates the object in to its scene-placed state.
         /// </summary>
-        public void AnimateIn();
+        /// <returns>The used tweening sequence.</returns>
+        public Sequence AnimateIn();
 
         /// <summary>
         /// Animates the object out to its end state.
         /// </summary>
-        public void AnimateOut();
+        /// <returns>The used tweening sequence.</returns>
+        public Sequence AnimateOut();
 
         /// <summary>
         /// Replays the tweening animation using <see cref="AnimateIn"/> and <see cref="AnimateOut"/>.
         /// </summary>
-        public void Replay();
+        /// <returns>The used tweening sequence.</returns>
+        public Sequence Replay();
     }
 }

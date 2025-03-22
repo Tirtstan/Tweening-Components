@@ -1,5 +1,4 @@
 using DG.Tweening;
-using UnityEditor;
 using UnityEngine;
 
 namespace Tweening
@@ -19,11 +18,11 @@ namespace Tweening
             originalScale = rect.localScale;
         }
 
-        public override Sequence AppendAnimateInSequence(Sequence seq) =>
-            seq.Append(Target.DOScale(originalScale * scaleBy, TimeShow).SetEase(EaseShow));
+        public override Sequence JoinAnimateInSequence(Sequence seq) =>
+            seq.Join(Target.DOScale(originalScale * scaleBy, TimeIn).SetEase(EaseIn));
 
-        public override Sequence AppendAnimateOutSequence(Sequence seq) =>
-            seq.Append(Target.DOScale(originalScale, TimeHide).SetEase(EaseHide));
+        public override Sequence JoinAnimateOutSequence(Sequence seq) =>
+            seq.Join(Target.DOScale(originalScale, TimeOut).SetEase(EaseOut));
 
         public override void ResetTween() => Target.localScale = originalScale;
     }
