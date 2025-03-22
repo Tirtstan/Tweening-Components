@@ -1,0 +1,20 @@
+{
+    "name": "com.tirt.tweeningcomponents",
+    "version": "1.0.0",
+    "displayName": "Tweening Components",
+    "description": "Powered by DOTween. Tweening Components is a package that provides a set of components to animate UGUI in Unity.",
+    "unity": "2019.4",
+    "unityRelease": "0f1",
+    "keywords": [
+        "tween",
+        "DOTween",
+        "ui",
+        "animation",
+        "ease",
+        "interpolation"
+    ],
+    "author": {
+        "name": "Tirt",
+        "url": "https://github.com/Tirtstan"
+    }
+}
