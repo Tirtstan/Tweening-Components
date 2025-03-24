@@ -2,14 +2,13 @@ using UnityEngine;
 
 public class PanelHover : MonoBehaviour
 {
-    [Header("Pacing")]
+    [Header("Configs")]
     [SerializeField]
     [Range(0, 5f)]
     private float speed = 1f;
 
     [SerializeField]
-    [Range(0, 0.5f)]
-    private float amplitude = 0.05f;
+    private float amplitude = 1f;
 
     [SerializeField]
     private bool unscaledTime = true;

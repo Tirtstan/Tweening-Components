@@ -26,20 +26,28 @@ namespace Tweening
                 Debug.LogError($"CanvasGroup is required for {nameof(FadeProfile)}!", rect);
         }
 
-        public override Sequence JoinAnimateInSequence(Sequence seq)
+        public override Sequence AddAnimateInSequence(Sequence seq)
         {
             if (canvasGroup == null)
                 return seq;
 
-            return seq.Join(canvasGroup.DOFade((int)fadeType, TimeIn).SetEase(EaseIn).SetUpdate(UseUnscaledTime));
+            return seq.Join(
+                canvasGroup.DOFade((int)fadeType, TimeIn).SetDelay(DelayIn).SetEase(EaseIn).SetUpdate(UseUnscaledTime)
+            );
         }
 
-        public override Sequence JoinAnimateOutSequence(Sequence seq)
+        public override Sequence AddAnimateOutSequence(Sequence seq)
         {
             if (canvasGroup == null)
                 return seq;
 
-            return seq.Join(canvasGroup.DOFade((int)fadeType, TimeOut).SetEase(EaseOut).SetUpdate(UseUnscaledTime));
+            return seq.Join(
+                canvasGroup
+                    .DOFade((int)fadeType, TimeOut)
+                    .SetDelay(DelayOut)
+                    .SetEase(EaseOut)
+                    .SetUpdate(UseUnscaledTime)
+            );
         }
 
         public override void ResetTween() => canvasGroup.alpha = fadeType == FadeType.Out ? 1 : 0;

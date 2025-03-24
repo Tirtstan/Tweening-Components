@@ -18,11 +18,19 @@ namespace Tweening
             originalScale = rect.localScale;
         }
 
-        public override Sequence JoinAnimateInSequence(Sequence seq) =>
-            seq.Join(Target.DOScale(originalScale, TimeIn).SetEase(EaseIn).SetUpdate(UseUnscaledTime));
+        public override Sequence AddAnimateInSequence(Sequence seq) =>
+            seq.Join(
+                Target.DOScale(originalScale, TimeIn).SetDelay(DelayIn).SetEase(EaseIn).SetUpdate(UseUnscaledTime)
+            );
 
-        public override Sequence JoinAnimateOutSequence(Sequence seq) =>
-            seq.Join(Target.DOScale(originalScale * scaleFrom, TimeOut).SetEase(EaseOut).SetUpdate(UseUnscaledTime));
+        public override Sequence AddAnimateOutSequence(Sequence seq) =>
+            seq.Join(
+                Target
+                    .DOScale(originalScale * scaleFrom, TimeOut)
+                    .SetDelay(DelayOut)
+                    .SetEase(EaseOut)
+                    .SetUpdate(UseUnscaledTime)
+            );
 
         public override void ResetTween() => Target.localScale = originalScale * scaleFrom;
     }

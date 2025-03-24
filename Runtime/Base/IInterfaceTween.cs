@@ -9,11 +9,6 @@ namespace Tweening
     public interface IInterfaceTween
     {
         /// <summary>
-        /// Prepares the tweening animation using the provided <see cref="RectTransform"/>.
-        /// </summary>
-        public abstract void InitializeTween(RectTransform rect);
-
-        /// <summary>
         /// Animates the object in to its scene-placed state.
         /// </summary>
         /// <returns>The used tweening sequence.</returns>

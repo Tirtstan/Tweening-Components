@@ -18,12 +18,12 @@ namespace Tweening
         public override void InitializeProfile(RectTransform rect)
         {
             base.InitializeProfile(rect);
-            originalPosition = Target.anchoredPosition;
+            originalPosition = rect.anchoredPosition;
 
             if (IsXAxis)
             {
                 targetPosition = new Vector2(
-                    originalPosition.x + DirectionValue * Target.sizeDelta.x,
+                    originalPosition.x + DirectionValue * rect.sizeDelta.x,
                     originalPosition.y
                 );
             }
@@ -31,39 +31,55 @@ namespace Tweening
             {
                 targetPosition = new Vector2(
                     originalPosition.x,
-                    originalPosition.y + DirectionValue * Target.sizeDelta.y
+                    originalPosition.y + DirectionValue * rect.sizeDelta.y
                 );
             }
         }
 
-        public override Sequence JoinAnimateInSequence(Sequence seq)
+        public override Sequence AddAnimateInSequence(Sequence seq)
         {
             if (IsXAxis)
             {
                 return seq.Join(
-                    Target.DOAnchorPosX(originalPosition.x, TimeIn).SetEase(EaseIn).SetUpdate(UseUnscaledTime)
+                    Target
+                        .DOAnchorPosX(originalPosition.x, TimeIn)
+                        .SetDelay(DelayIn)
+                        .SetEase(EaseIn)
+                        .SetUpdate(UseUnscaledTime)
                 );
             }
             else
             {
                 return seq.Join(
-                    Target.DOAnchorPosY(originalPosition.y, TimeIn).SetEase(EaseIn).SetUpdate(UseUnscaledTime)
+                    Target
+                        .DOAnchorPosY(originalPosition.y, TimeIn)
+                        .SetDelay(DelayIn)
+                        .SetEase(EaseIn)
+                        .SetUpdate(UseUnscaledTime)
                 );
             }
         }
 
-        public override Sequence JoinAnimateOutSequence(Sequence seq)
+        public override Sequence AddAnimateOutSequence(Sequence seq)
         {
             if (IsXAxis)
             {
                 return seq.Join(
-                    Target.DOAnchorPosX(targetPosition.x, TimeOut).SetEase(EaseOut).SetUpdate(UseUnscaledTime)
+                    Target
+                        .DOAnchorPosX(targetPosition.x, TimeOut)
+                        .SetDelay(DelayOut)
+                        .SetEase(EaseOut)
+                        .SetUpdate(UseUnscaledTime)
                 );
             }
             else
             {
                 return seq.Join(
-                    Target.DOAnchorPosY(targetPosition.y, TimeOut).SetEase(EaseOut).SetUpdate(UseUnscaledTime)
+                    Target
+                        .DOAnchorPosY(targetPosition.y, TimeOut)
+                        .SetDelay(DelayOut)
+                        .SetEase(EaseOut)
+                        .SetUpdate(UseUnscaledTime)
                 );
             }
         }
