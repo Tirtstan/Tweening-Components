@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Tweening
+namespace TweeningComponents
 {
     public abstract class SingleTweenController : TweenControllerBase<RectTransform>
     {
@@ -13,7 +13,7 @@ namespace Tweening
         [Tooltip("Tween only the children of the target rect.")]
         private bool tweenOnlyChildren;
 
-        public override void InitializeController()
+        protected override void InitializeController()
         {
             if (target == null)
                 target = GetComponent<RectTransform>();

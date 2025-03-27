@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Tweening.EditorTools
+namespace TweeningComponents.EditorTools
 {
     [CustomEditor(typeof(MultiTweenController), true)]
     public class MultiTweenControllerEditor : Editor

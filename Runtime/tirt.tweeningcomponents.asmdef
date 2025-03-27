@@ -1,6 +1,6 @@
 {
     "name": "tirt.tweeningcomponents",
-    "rootNamespace": "Tweening",
+    "rootNamespace": "TweeningComponents",
     "references": [
         "UnityEngine.UI",
         "DOTween.Modules"

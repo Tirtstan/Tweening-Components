@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-namespace Tweening
+namespace TweeningComponents
 {
     [CreateAssetMenu(fileName = "Group Fade Tween", menuName = "Tweening/Group Fade Tween")]
     public class GroupFadeTweenProfile : GroupTweenProfile
@@ -25,7 +25,10 @@ namespace Tweening
             foreach (var target in targets)
             {
                 if (!target.TryGetComponent(out CanvasGroup group))
+                {
                     group = target.gameObject.AddComponent<CanvasGroup>();
+                    Debug.LogWarning($"A CanvasGroup is required for GroupFadeTweenProfile! Adding...", target);
+                }
 
                 targetGroups[target] = group;
             }
@@ -38,10 +41,7 @@ namespace Tweening
                 var rect = Target[i];
                 var group = targetGroups[rect];
 
-                seq.Insert(
-                    i * elementDelay,
-                    group.DOFade(fadeInTo, TimeIn).SetDelay(DelayIn).SetEase(EaseIn).SetUpdate(UseUnscaledTime)
-                );
+                seq.Insert(i * elementDelay, group.DOFade(fadeInTo, TimeIn).SetDelay(DelayIn).SetEase(EaseIn));
             }
             return seq;
         }
@@ -54,10 +54,7 @@ namespace Tweening
                 var rect = Target[index];
                 var group = targetGroups[rect];
 
-                seq.Insert(
-                    i * elementDelay,
-                    group.DOFade(fadeOutTo, TimeOut).SetDelay(DelayOut).SetEase(EaseOut).SetUpdate(UseUnscaledTime)
-                );
+                seq.Insert(i * elementDelay, group.DOFade(fadeOutTo, TimeOut).SetDelay(DelayOut).SetEase(EaseOut));
             }
             return seq;
         }
@@ -66,6 +63,16 @@ namespace Tweening
         {
             foreach (var pair in targetGroups)
                 pair.Value.alpha = fadeOutTo;
+        }
+
+        protected override void CopyValuesTo(TweenProfile<List<RectTransform>> target)
+        {
+            base.CopyValuesTo(target);
+            if (target is GroupFadeTweenProfile groupFadeTweenProfile)
+            {
+                groupFadeTweenProfile.fadeInTo = fadeInTo;
+                groupFadeTweenProfile.fadeOutTo = fadeOutTo;
+            }
         }
     }
 }

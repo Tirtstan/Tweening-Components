@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Tweening
+namespace TweeningComponents
 {
     [DisallowMultipleComponent, AddComponentMenu("UI/Tweening/Single Tween On Hover")]
     public class SingleTweenOnHover

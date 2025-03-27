@@ -1,26 +1,56 @@
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
-namespace Tweening
+namespace TweeningComponents
 {
     public abstract class TweenControllerBase<T> : MonoBehaviour, IInterfaceTween
     {
-        [Header("Profiles")]
+        [Header("Profile Options")]
         [SerializeField]
         [Tooltip("Tweens are executed at the same time.")]
         protected TweenProfile<T>[] tweenProfiles;
+
+        [Header("Configs")]
+        [SerializeField]
+        [Tooltip("Creates its own instance of each tween profile.")]
+        private bool createOwnProfilesInstance;
+
+        [SerializeField]
+        [Tooltip("Whether to use unscaled time for the tween.")]
+        private bool useUnscaledTime = true;
+
+        [SerializeField]
+        [Tooltip("Whether to set the Target(s) inactive when tweening out is complete.")]
+        private bool setTargetInactiveOnOutComplete;
         protected Sequence ShowSeq;
         protected Sequence HideSeq;
 
-        protected virtual void Awake() => InitializeController();
+        protected virtual void Awake()
+        {
+            if (createOwnProfilesInstance)
+            {
+                List<TweenProfile<T>> newProfilesList = new();
+                foreach (var profile in tweenProfiles)
+                {
+                    var newProfile = profile.Clone();
+                    newProfilesList.Add(newProfile);
+                }
 
-        public abstract void InitializeController();
+                tweenProfiles = newProfilesList.ToArray();
+            }
+
+            InitializeController();
+        }
+
+        protected abstract void InitializeController();
         protected abstract void InitializeTargets(T target);
 
         public virtual Sequence AnimateIn()
         {
             ShowSeq?.Kill();
             Sequence seq = DOTween.Sequence();
+            seq.SetUpdate(useUnscaledTime);
 
             foreach (var tweenProfile in tweenProfiles)
             {
@@ -35,7 +65,7 @@ namespace Tweening
         {
             HideSeq?.Kill();
             Sequence seq = DOTween.Sequence();
-            seq.OnComplete(OnHideComplete);
+            seq.SetUpdate(useUnscaledTime).OnComplete(OnHideComplete);
 
             foreach (var tweenProfile in tweenProfiles)
                 tweenProfile.AddAnimateOutSequence(seq);
@@ -47,17 +77,22 @@ namespace Tweening
         {
             KillAllTweens();
 
-            AnimateOut();
-            HideSeq.AppendCallback(() => AnimateIn());
+            Sequence replaySeq = DOTween.Sequence();
+            replaySeq.SetUpdate(useUnscaledTime);
 
-            return HideSeq;
+            foreach (var tweenProfile in tweenProfiles)
+                tweenProfile.AddAnimateOutSequence(replaySeq);
+
+            replaySeq.AppendCallback(() => AnimateIn());
+
+            return HideSeq = replaySeq;
         }
 
         protected virtual void OnHideComplete()
         {
-            foreach (var tweenProfile in tweenProfiles)
+            if (setTargetInactiveOnOutComplete)
             {
-                if (tweenProfile.SetInactiveOnOutComplete)
+                foreach (var tweenProfile in tweenProfiles)
                     HandleTargetDeactivation(tweenProfile);
             }
         }

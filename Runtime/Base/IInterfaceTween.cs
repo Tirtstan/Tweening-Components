@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace Tweening
+namespace TweeningComponents
 {
     /// <summary>
     /// Interface for tweening in and out of a UI element.

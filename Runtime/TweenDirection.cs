@@ -1,4 +1,4 @@
-namespace Tweening
+namespace TweeningComponents
 {
     public enum TweenDirection
     {

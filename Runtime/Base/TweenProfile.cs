@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace Tweening
+namespace TweeningComponents
 {
     /// <summary>
     /// Base class for tween profiles.
@@ -29,13 +29,6 @@ namespace Tweening
 
         [Tooltip("Ease type for the object to animate out.")]
         public Ease EaseOut = Ease.OutExpo;
-
-        [Header("Other")]
-        [Tooltip("Whether to use unscaled time for the tween.")]
-        public bool UseUnscaledTime = true;
-
-        [Tooltip("Whether to set the object inactive when tweening out is complete.")]
-        public bool SetInactiveOnOutComplete;
         protected TTarget Target { get; private set; }
 
         public virtual void InitializeProfile(TTarget target) => Target = target;
@@ -49,6 +42,27 @@ namespace Tweening
         public abstract void ResetTween();
 
         public TTarget GetTarget() => Target;
+
+        public TweenProfile<TTarget> Clone()
+        {
+            var clone = CreateInstance(GetType()) as TweenProfile<TTarget>;
+            CopyBaseValuesTo(clone);
+            CopyValuesTo(clone);
+            return clone;
+        }
+
+        // done it this way to force override (better dev experience, C# 11 would make this easier)
+        protected abstract void CopyValuesTo(TweenProfile<TTarget> target);
+
+        private void CopyBaseValuesTo(TweenProfile<TTarget> target)
+        {
+            target.TimeIn = TimeIn;
+            target.TimeOut = TimeOut;
+            target.DelayIn = DelayIn;
+            target.DelayOut = DelayOut;
+            target.EaseIn = EaseIn;
+            target.EaseOut = EaseOut;
+        }
     }
 
     /// <summary>

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Tweening
+namespace TweeningComponents
 {
     public abstract class MultiTweenController : TweenControllerBase<List<RectTransform>>
     {
@@ -14,7 +14,7 @@ namespace Tweening
         [Tooltip("Auto-populate targets from children of this transform.")]
         private bool useChildrenAsTargets = true;
 
-        public override void InitializeController()
+        protected override void InitializeController()
         {
             List<RectTransform> foundTargets = new();
             if (targets.Length > 0)
