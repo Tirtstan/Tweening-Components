@@ -1,6 +1,6 @@
 {
     "name": "tirt.tweeningcomponents.Editor",
-    "rootNamespace": "Tweening",
+    "rootNamespace": "TweeningComponents",
     "references": [
         "tirt.tweeningcomponents"
     ],

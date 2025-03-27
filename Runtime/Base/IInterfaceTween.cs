@@ -1,18 +1,13 @@
 using DG.Tweening;
 using UnityEngine;
 
-namespace Tweening
+namespace TweeningComponents
 {
     /// <summary>
     /// Interface for tweening in and out of a UI element.
     /// </summary>
     public interface IInterfaceTween
     {
-        /// <summary>
-        /// Prepares the tweening animation using the provided <see cref="RectTransform"/>.
-        /// </summary>
-        public abstract void InitializeTween(RectTransform rect);
-
         /// <summary>
         /// Animates the object in to its scene-placed state.
         /// </summary>

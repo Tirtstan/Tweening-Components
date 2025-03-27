@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Tweening
+namespace TweeningComponents
 {
-    [DisallowMultipleComponent, AddComponentMenu("UI/Tweening/Tween On Hover")]
-    public class TweenOnHover
-        : TweenOnEventBase,
+    [DisallowMultipleComponent, AddComponentMenu("UI/Tweening/Multi Tween On Hover")]
+    public class MultiTweenOnHover
+        : MultiTweenController,
             IPointerEnterHandler,
             IPointerExitHandler,
             ISelectHandler,
