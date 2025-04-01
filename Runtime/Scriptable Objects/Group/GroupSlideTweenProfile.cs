@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TweeningComponents
 {
-    [CreateAssetMenu(fileName = "Group Slide Tween", menuName = "Tweening/Group Slide Tween")]
+    [CreateAssetMenu(fileName = "Group Slide Tween", menuName = "Tweening/Group Slide Tween", order = 2)]
     public class GroupSlideTweenProfile : GroupTweenProfile
     {
         [Header("Slide Settings")]
