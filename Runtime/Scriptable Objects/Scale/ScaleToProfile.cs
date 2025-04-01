@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TweeningComponents
 {
-    [CreateAssetMenu(fileName = "Scale To Tween", menuName = "Tweening/Scale To")]
+    [CreateAssetMenu(fileName = "Scale To Tween", menuName = "Tweening/Scale To", order = 0)]
     public class ScaleToProfile : Vector3TweenProfile
     {
         [Header("Scale Config")]

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TweeningComponents
 {
-    [CreateAssetMenu(fileName = "Rotate By Tween", menuName = "Tweening/Rotate By")]
+    [CreateAssetMenu(fileName = "Rotate By Tween", menuName = "Tweening/Rotate By", order = 1)]
     public class RotateByProfile : Vector3TweenProfile
     {
         [Header("Rotate Config")]

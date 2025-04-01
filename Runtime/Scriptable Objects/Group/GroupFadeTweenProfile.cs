@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TweeningComponents
 {
-    [CreateAssetMenu(fileName = "Group Fade Tween", menuName = "Tweening/Group Fade Tween")]
+    [CreateAssetMenu(fileName = "Group Fade Tween", menuName = "Tweening/Group Fade Tween", order = 2)]
     public class GroupFadeTweenProfile : GroupTweenProfile
     {
         [Header("Fade Settings")]
@@ -27,7 +27,10 @@ namespace TweeningComponents
                 if (!target.TryGetComponent(out CanvasGroup group))
                 {
                     group = target.gameObject.AddComponent<CanvasGroup>();
-                    Debug.LogWarning($"A CanvasGroup is required for GroupFadeTweenProfile! Adding...", target);
+                    Debug.LogWarning(
+                        $"A CanvasGroup component was added to {target.gameObject.name} for GroupFadeProfile",
+                        target
+                    );
                 }
 
                 targetGroups[target] = group;
