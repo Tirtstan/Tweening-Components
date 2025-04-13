@@ -2,7 +2,7 @@
     "name": "tirt.tweeningcomponents",
     "rootNamespace": "TweeningComponents",
     "references": [
-        "UnityEngine.UI",
+        "Unity.TextMeshPro",
         "DOTween.Modules"
     ],
     "includePlatforms": [],

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TweeningComponents
+namespace TweeningComponents.Profiles
 {
     /// <summary>
     /// A tween profile that modifies a Vector3 value.
@@ -10,7 +10,7 @@ namespace TweeningComponents
     {
         [Header("Axis Exclusion")]
         [SerializeField]
-        [Tooltip("Don't modify the X axi.")]
+        [Tooltip("Don't modify the X axis.")]
         private bool excludeX;
 
         [SerializeField]
@@ -27,7 +27,7 @@ namespace TweeningComponents
         /// <param name="target">The vector to be modified.</param>
         /// <param name="reference">The reference vector to pull values from.</param>
         /// <returns>A new vector with exclusions applied.</returns>
-        protected Vector3 ApplyAxisExclusion(Vector3 target, Vector3 reference)
+        public Vector3 ApplyAxisExclusion(Vector3 target, Vector3 reference)
         {
             if (excludeX)
                 target.x = reference.x;
@@ -36,17 +36,6 @@ namespace TweeningComponents
             if (excludeZ)
                 target.z = reference.z;
             return target;
-        }
-
-        /// <summary>
-        /// Copy common axis exclusion settings to the target profile.
-        /// </summary>
-        /// <param name="target">The profile to copy settings to.</param>
-        protected void CopyAxisExclusionSettings(Vector3TweenProfile target)
-        {
-            target.excludeX = excludeX;
-            target.excludeY = excludeY;
-            target.excludeZ = excludeZ;
         }
     }
 }
