@@ -1,3 +1,4 @@
+using TweeningComponents.Calculators;
 using UnityEngine;
 
 namespace TweeningComponents.Profiles
@@ -28,5 +29,8 @@ namespace TweeningComponents.Profiles
         public TweenDirection Direction = TweenDirection.Right;
         public Vector3 PositionAmount = Vector3.zero;
         public float DistanceMultiplier = 1f;
+
+        public override TweenCalculator GetCalculator(RectTransform rectTransform) =>
+            new MoveTweenCalculator(this, rectTransform);
     }
 }

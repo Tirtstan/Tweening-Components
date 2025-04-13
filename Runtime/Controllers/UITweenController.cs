@@ -42,20 +42,8 @@ namespace TweeningComponents.Controllers
             if (profiles != null && profiles.Length > 0)
             {
                 foreach (var tweenProfile in profiles)
-                    calculators.Add(CreateCalculator(tweenProfile));
+                    calculators.Add(tweenProfile.GetCalculator(rectTarget));
             }
-        }
-
-        private TweenCalculator CreateCalculator(TweenProfile tweenProfile)
-        {
-            return tweenProfile switch
-            {
-                ScaleProfile scaleProfile => new ScaleTweenCalculator(scaleProfile, rectTarget),
-                MoveProfile moveProfile => new MoveTweenCalculator(moveProfile, rectTarget),
-                RotateProfile rotateProfile => new RotateTweenCalculator(rotateProfile, rectTarget),
-                FadeProfile fadeProfile => new FadeTweenCalculator(fadeProfile, rectTarget),
-                _ => throw new System.NotImplementedException($"No calculator for {tweenProfile.GetType()}"),
-            };
         }
 
         public virtual Sequence AnimateIn()

@@ -1,4 +1,5 @@
 using DG.Tweening;
+using TweeningComponents.Calculators;
 using UnityEngine;
 
 namespace TweeningComponents.Profiles
@@ -17,5 +18,7 @@ namespace TweeningComponents.Profiles
         public float TimeOut = 0.5f;
         public Ease EaseOut = Ease.OutExpo;
         public float DelayOut;
+
+        public abstract TweenCalculator GetCalculator(RectTransform rectTransform);
     }
 }

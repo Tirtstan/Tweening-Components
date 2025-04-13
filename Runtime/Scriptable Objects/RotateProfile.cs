@@ -1,3 +1,4 @@
+using TweeningComponents.Calculators;
 using UnityEngine;
 
 namespace TweeningComponents.Profiles
@@ -16,5 +17,9 @@ namespace TweeningComponents.Profiles
         public RotateMode Mode = RotateMode.From;
         public Vector3 TargetRotation = Vector3.zero;
         public float RotateFactor = 0.5f;
+        public DG.Tweening.RotateMode TweenRotateMode = DG.Tweening.RotateMode.FastBeyond360;
+
+        public override TweenCalculator GetCalculator(RectTransform rectTransform) =>
+            new RotateTweenCalculator(this, rectTransform);
     }
 }
