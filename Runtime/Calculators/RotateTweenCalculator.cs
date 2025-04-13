@@ -59,7 +59,7 @@ namespace TweeningComponents.Calculators
             rectTransform.localEulerAngles = from;
 
             return rectTransform
-                .DOLocalRotate(to, rotateProfile.TimeIn, RotateMode.FastBeyond360)
+                .DORotate(to, rotateProfile.TimeIn, rotateProfile.TweenRotateMode)
                 .SetEase(rotateProfile.EaseIn)
                 .SetDelay(rotateProfile.DelayIn);
         }
@@ -68,17 +68,18 @@ namespace TweeningComponents.Calculators
         {
             Vector3 to = rotateProfile.Mode switch
             {
-                RotateProfile.RotateMode.From => rotateProfile.ApplyAxisExclusion(
-                    originalRotation * rotateProfile.RotateFactor,
-                    originalRotation
-                ),
+                RotateProfile.RotateMode.From
+                    => rotateProfile.ApplyAxisExclusion(
+                        originalRotation * rotateProfile.RotateFactor,
+                        originalRotation
+                    ),
                 RotateProfile.RotateMode.To => originalRotation,
                 RotateProfile.RotateMode.By => originalRotation,
                 _ => originalRotation,
             };
 
             return rectTransform
-                .DOLocalRotate(to, rotateProfile.TimeOut, RotateMode.FastBeyond360)
+                .DORotate(to, rotateProfile.TimeOut, rotateProfile.TweenRotateMode)
                 .SetEase(rotateProfile.EaseOut)
                 .SetDelay(rotateProfile.DelayOut);
         }

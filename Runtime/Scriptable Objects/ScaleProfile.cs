@@ -1,3 +1,4 @@
+using TweeningComponents.Calculators;
 using UnityEngine;
 
 namespace TweeningComponents.Profiles
@@ -16,5 +17,8 @@ namespace TweeningComponents.Profiles
         public ScaleMode Mode = ScaleMode.From;
         public Vector3 TargetScale = Vector3.one;
         public float ScaleFactor = 0.5f;
+
+        public override TweenCalculator GetCalculator(RectTransform rectTransform) =>
+            new ScaleTweenCalculator(this, rectTransform);
     }
 }

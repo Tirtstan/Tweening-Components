@@ -32,7 +32,7 @@ namespace TweeningComponents.Calculators
                     {
                         canvasGroup = rectTransform.gameObject.AddComponent<CanvasGroup>();
                         Debug.LogWarning(
-                            $"A CanvasGroup component was added to {rectTransform.name} for FadeTweenCalculator\nRecommended to add one manually to avoid performance issues.",
+                            $"A CanvasGroup component was added to {rectTransform.name} for FadeProfile\nRecommended to add one manually to avoid performance issues.",
                             rectTransform
                         );
                     }
