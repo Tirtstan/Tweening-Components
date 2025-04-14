@@ -11,10 +11,12 @@ namespace TweeningComponents.Controllers
     {
         [Header("Components")]
         [SerializeField]
+        [Tooltip("Tween profiles are executed at the same time for each target.")]
         protected TweenProfile[] profiles;
 
         [SerializeField]
-        protected RectTransform target;
+        [Tooltip("All targets are animated at the same time with the same profile(s).")]
+        protected RectTransform[] targets;
 
         [Header("Configs")]
         [SerializeField]
@@ -22,18 +24,26 @@ namespace TweeningComponents.Controllers
         protected bool useUnscaledTime = true;
 
         [SerializeField]
-        [Tooltip("Whether to set the target inactive when tweening out is complete.")]
+        [Tooltip("Whether to set the target(s) inactive when tweening out is complete.")]
         protected bool inactiveOnOutEnd;
 
-        protected RectTransform rectTarget;
+        protected RectTransform[] cachedTargets;
         protected Sequence showSequence;
         protected Sequence hideSequence;
         private readonly List<TweenCalculator> calculators = new();
 
         protected virtual void Awake()
         {
-            rectTarget = target != null ? target : GetComponent<RectTransform>();
+            CacheTweenTargets();
             CreateCalculators();
+        }
+
+        private void CacheTweenTargets()
+        {
+            if (targets == null || targets.Length == 0)
+                Reset();
+
+            cachedTargets = targets;
         }
 
         private void CreateCalculators()
@@ -41,8 +51,11 @@ namespace TweeningComponents.Controllers
             calculators.Clear();
             if (profiles != null && profiles.Length > 0)
             {
-                foreach (var tweenProfile in profiles)
-                    calculators.Add(tweenProfile.GetCalculator(rectTarget));
+                foreach (var rect in cachedTargets)
+                {
+                    foreach (var tweenProfile in profiles)
+                        calculators.Add(tweenProfile.CreateCalculator(rect));
+                }
             }
         }
 
@@ -87,19 +100,34 @@ namespace TweeningComponents.Controllers
         protected virtual void OnHideComplete()
         {
             if (inactiveOnOutEnd)
-                rectTarget.gameObject.SetActive(false);
+            {
+                foreach (var rect in cachedTargets)
+                    rect.gameObject.SetActive(false);
+            }
         }
 
         private void Reset()
         {
-            if (target == null)
-                target = GetComponent<RectTransform>();
+            if (targets == null || targets.Length == 0)
+                targets = new RectTransform[] { GetComponent<RectTransform>() };
         }
 
         private void KillTweens()
         {
-            showSequence?.Kill();
-            hideSequence?.Kill();
+            showSequence?.Kill(true);
+            hideSequence?.Kill(true);
+        }
+
+        public void FillTargetsWithChildren()
+        {
+            List<RectTransform> children = new();
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                if (transform.GetChild(i).TryGetComponent<RectTransform>(out var child))
+                    children.Add(child);
+            }
+
+            targets = children.ToArray();
         }
 
         protected virtual void OnDisable() => KillTweens();

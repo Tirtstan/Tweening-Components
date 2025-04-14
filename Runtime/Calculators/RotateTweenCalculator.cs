@@ -68,11 +68,10 @@ namespace TweeningComponents.Calculators
         {
             Vector3 to = rotateProfile.Mode switch
             {
-                RotateProfile.RotateMode.From
-                    => rotateProfile.ApplyAxisExclusion(
-                        originalRotation * rotateProfile.RotateFactor,
-                        originalRotation
-                    ),
+                RotateProfile.RotateMode.From => rotateProfile.ApplyAxisExclusion(
+                    originalRotation * rotateProfile.RotateFactor,
+                    originalRotation
+                ),
                 RotateProfile.RotateMode.To => originalRotation,
                 RotateProfile.RotateMode.By => originalRotation,
                 _ => originalRotation,

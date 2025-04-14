@@ -1,6 +1,6 @@
 {
     "name": "com.tirt.tweeningcomponents",
-    "version": "3.1.0",
+    "version": "3.2.0",
     "displayName": "Tweening Components",
     "description": "Powered by DOTween. Tweening Components is a package that provides a set of components to animate UGUI in Unity.",
     "unity": "2019.4",
