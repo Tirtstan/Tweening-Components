@@ -30,7 +30,7 @@ namespace TweeningComponents.Profiles
         public Vector3 PositionAmount = Vector3.zero;
         public float DistanceMultiplier = 1f;
 
-        public override TweenCalculator GetCalculator(RectTransform rectTransform) =>
+        public override TweenCalculator CreateCalculator(RectTransform rectTransform) =>
             new MoveTweenCalculator(this, rectTransform);
     }
 }

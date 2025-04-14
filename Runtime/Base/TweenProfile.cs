@@ -19,6 +19,6 @@ namespace TweeningComponents.Profiles
         public Ease EaseOut = Ease.OutExpo;
         public float DelayOut;
 
-        public abstract TweenCalculator GetCalculator(RectTransform rectTransform);
+        public abstract TweenCalculator CreateCalculator(RectTransform rectTransform);
     }
 }

@@ -3,20 +3,32 @@ using UnityEditor;
 using UnityEngine;
 using TweeningComponents.Controllers;
 
-namespace TweeningComponents.EditorTools
+namespace TweeningComponents.Editor
 {
     [CustomEditor(typeof(UITweenController), true)]
-    public class UITweenControllerEditor : Editor
+    public class UITweenControllerEditor : UnityEditor.Editor
     {
+        private UITweenController tweenController;
+
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
 
+            tweenController = target as UITweenController;
+
             EditorGUILayout.Space();
-            if (GUILayout.Button("Replay Tween", GUILayout.Height(30)))
+            GUILayout.Label("Tweening Controls", EditorStyles.boldLabel);
+            EditorGUILayout.Space();
+
+            if (GUILayout.Button("Replay", GUILayout.Height(30)))
             {
                 if (Application.isPlaying)
-                    ((IInterfaceTween)target).Replay();
+                    tweenController.Replay();
+            }
+
+            if (GUILayout.Button("Add Children", GUILayout.Height(30)))
+            {
+                tweenController.FillTargetsWithChildren();
             }
         }
     }

@@ -59,8 +59,10 @@ namespace TweeningComponents.Calculators
         {
             Vector3 to = scaleProfile.Mode switch
             {
-                ScaleProfile.ScaleMode.From
-                    => scaleProfile.ApplyAxisExclusion(originalScale * scaleProfile.ScaleFactor, originalScale),
+                ScaleProfile.ScaleMode.From => scaleProfile.ApplyAxisExclusion(
+                    originalScale * scaleProfile.ScaleFactor,
+                    originalScale
+                ),
                 ScaleProfile.ScaleMode.To => originalScale,
                 ScaleProfile.ScaleMode.By => originalScale,
                 _ => originalScale,

@@ -13,7 +13,7 @@ namespace TweeningComponents.Profiles
         [Range(0f, 1f)]
         public float ToAlpha = 1f;
 
-        public override TweenCalculator GetCalculator(RectTransform rectTransform) =>
+        public override TweenCalculator CreateCalculator(RectTransform rectTransform) =>
             new FadeTweenCalculator(this, rectTransform);
     }
 }

@@ -18,7 +18,7 @@ namespace TweeningComponents.Profiles
         public Vector3 TargetScale = Vector3.one;
         public float ScaleFactor = 0.5f;
 
-        public override TweenCalculator GetCalculator(RectTransform rectTransform) =>
+        public override TweenCalculator CreateCalculator(RectTransform rectTransform) =>
             new ScaleTweenCalculator(this, rectTransform);
     }
 }

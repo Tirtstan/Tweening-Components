@@ -19,7 +19,7 @@ namespace TweeningComponents.Profiles
         public float RotateFactor = 0.5f;
         public DG.Tweening.RotateMode TweenRotateMode = DG.Tweening.RotateMode.FastBeyond360;
 
-        public override TweenCalculator GetCalculator(RectTransform rectTransform) =>
+        public override TweenCalculator CreateCalculator(RectTransform rectTransform) =>
             new RotateTweenCalculator(this, rectTransform);
     }
 }
