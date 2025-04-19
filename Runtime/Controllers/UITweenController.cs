@@ -18,19 +18,13 @@ namespace TweeningComponents.Controllers
         [Tooltip("All targets are animated at the same time with the same profile(s).")]
         protected RectTransform[] targets;
 
-        [Header("Configs")]
         [SerializeField]
-        [Tooltip("Useful for if you still want the sequences to animated when paused.")]
-        protected bool useUnscaledTime = true;
-
-        [SerializeField]
-        [Tooltip("Whether to set the target(s) inactive when tweening out is complete.")]
-        protected bool inactiveOnOutEnd;
+        private TweenControllerConfig config;
 
         protected RectTransform[] cachedTargets;
         protected Sequence showSequence;
         protected Sequence hideSequence;
-        private readonly List<TweenCalculator> calculators = new();
+        private readonly List<List<TweenCalculator>> groupedCalculators = new();
 
         protected virtual void Awake()
         {
@@ -48,13 +42,16 @@ namespace TweeningComponents.Controllers
 
         private void CreateCalculators()
         {
-            calculators.Clear();
+            groupedCalculators.Clear();
             if (profiles != null && profiles.Length > 0)
             {
                 foreach (var rect in cachedTargets)
                 {
+                    List<TweenCalculator> calcGroup = new();
                     foreach (var tweenProfile in profiles)
-                        calculators.Add(tweenProfile.CreateCalculator(rect));
+                        calcGroup.Add(tweenProfile.CreateCalculator(rect));
+
+                    groupedCalculators.Add(calcGroup);
                 }
             }
         }
@@ -63,10 +60,17 @@ namespace TweeningComponents.Controllers
         {
             KillTweens();
             showSequence = DOTween.Sequence();
-            foreach (var calc in calculators)
-                showSequence.Join(calc.CreateAnimateInTween());
 
-            showSequence.SetUpdate(useUnscaledTime);
+            for (int i = 0; i < groupedCalculators.Count; i++)
+            {
+                Sequence targetSeq = DOTween.Sequence();
+                foreach (var calc in groupedCalculators[i])
+                    targetSeq.Join(calc.CreateAnimateInTween());
+
+                showSequence.Insert(i * config.elementDelay, targetSeq);
+            }
+
+            showSequence.SetUpdate(config.useUnscaledTime);
             return showSequence;
         }
 
@@ -74,10 +78,19 @@ namespace TweeningComponents.Controllers
         {
             KillTweens();
             hideSequence = DOTween.Sequence();
-            foreach (var calc in calculators)
-                hideSequence.Join(calc.CreateAnimateOutTween());
+            int count = groupedCalculators.Count;
 
-            hideSequence.SetUpdate(useUnscaledTime).OnComplete(OnHideComplete);
+            for (int i = 0; i < count; i++)
+            {
+                int index = config.reverseOrderOnExit ? count - 1 - i : i;
+                Sequence targetSeq = DOTween.Sequence();
+                foreach (var calc in groupedCalculators[index])
+                    targetSeq.Join(calc.CreateAnimateOutTween());
+
+                hideSequence.Insert(i * config.elementDelay, targetSeq);
+            }
+
+            hideSequence.SetUpdate(config.useUnscaledTime).OnComplete(OnHideComplete);
             return hideSequence;
         }
 
@@ -85,12 +98,9 @@ namespace TweeningComponents.Controllers
         {
             KillTweens();
             Sequence replaySequence = DOTween.Sequence();
-            replaySequence.SetUpdate(useUnscaledTime);
+            replaySequence.SetUpdate(config.useUnscaledTime);
 
-            Sequence outSequence = DOTween.Sequence();
-            foreach (var calc in calculators)
-                outSequence.Join(calc.CreateAnimateOutTween());
-
+            Sequence outSequence = AnimateOut();
             replaySequence.Append(outSequence);
             replaySequence.AppendCallback(() => AnimateIn());
 
@@ -99,7 +109,7 @@ namespace TweeningComponents.Controllers
 
         protected virtual void OnHideComplete()
         {
-            if (inactiveOnOutEnd)
+            if (config.inactiveOnOutEnd)
             {
                 foreach (var rect in cachedTargets)
                     rect.gameObject.SetActive(false);
@@ -114,8 +124,8 @@ namespace TweeningComponents.Controllers
 
         private void KillTweens()
         {
-            showSequence?.Kill(true);
-            hideSequence?.Kill(true);
+            showSequence?.Kill();
+            hideSequence?.Kill();
         }
 
         public void FillTargetsWithChildren()

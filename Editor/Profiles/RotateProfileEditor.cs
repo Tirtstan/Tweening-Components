@@ -6,24 +6,25 @@ using TweeningComponents.Profiles;
 namespace TweeningComponents.Editor
 {
     [CustomEditor(typeof(RotateProfile))]
-    public class RotateProfileEditor : TweenProfileEditor
+    public class RotateProfileEditor : Vector3TweenProfileEditor
     {
         protected override void DrawAdditionalProperties()
         {
             SerializedProperty modeProp = serializedObject.FindProperty("Mode");
             EditorGUILayout.PropertyField(modeProp);
-            RotateProfile.RotateMode mode = (RotateProfile.RotateMode)modeProp.enumValueIndex;
+            VectorMode mode = (VectorMode)modeProp.enumValueIndex;
 
             switch (mode)
             {
-                case RotateProfile.RotateMode.From:
+                case VectorMode.From:
+                case VectorMode.By:
                     EditorGUILayout.PropertyField(
                         serializedObject.FindProperty("RotateFactor"),
                         new GUIContent("Rotate Factor")
                     );
                     break;
-                case RotateProfile.RotateMode.To:
-                case RotateProfile.RotateMode.By:
+                case VectorMode.To:
+                case VectorMode.Offset:
                     EditorGUILayout.PropertyField(
                         serializedObject.FindProperty("TargetRotation"),
                         new GUIContent("Target Rotation")

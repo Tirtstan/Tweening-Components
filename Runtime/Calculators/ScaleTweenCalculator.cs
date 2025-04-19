@@ -29,18 +29,26 @@ namespace TweeningComponents.Calculators
 
             switch (scaleProfile.Mode)
             {
-                case ScaleProfile.ScaleMode.From:
+                case VectorMode.From:
                     from = scaleProfile.ApplyAxisExclusion(originalScale * scaleProfile.ScaleFactor, originalScale);
                     to = originalScale;
                     break;
-                case ScaleProfile.ScaleMode.To:
+
+                case VectorMode.To:
                     from = originalScale;
                     to = scaleProfile.ApplyAxisExclusion(scaleProfile.TargetScale, originalScale);
                     break;
-                case ScaleProfile.ScaleMode.By:
+
+                case VectorMode.By:
                     from = originalScale;
                     to = scaleProfile.ApplyAxisExclusion(originalScale * scaleProfile.ScaleFactor, originalScale);
                     break;
+
+                case VectorMode.Offset:
+                    from = originalScale;
+                    to = scaleProfile.ApplyAxisExclusion(originalScale + scaleProfile.TargetScale, originalScale);
+                    break;
+
                 default:
                     from = originalScale;
                     to = originalScale;
@@ -59,12 +67,16 @@ namespace TweeningComponents.Calculators
         {
             Vector3 to = scaleProfile.Mode switch
             {
-                ScaleProfile.ScaleMode.From => scaleProfile.ApplyAxisExclusion(
+                VectorMode.From => scaleProfile.ApplyAxisExclusion(
                     originalScale * scaleProfile.ScaleFactor,
                     originalScale
                 ),
-                ScaleProfile.ScaleMode.To => originalScale,
-                ScaleProfile.ScaleMode.By => originalScale,
+                VectorMode.To => originalScale,
+                VectorMode.By => originalScale,
+                VectorMode.Offset => scaleProfile.ApplyAxisExclusion(
+                    originalScale + scaleProfile.TargetScale,
+                    originalScale
+                ),
                 _ => originalScale,
             };
 

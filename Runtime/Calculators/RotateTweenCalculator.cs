@@ -29,7 +29,7 @@ namespace TweeningComponents.Calculators
 
             switch (rotateProfile.Mode)
             {
-                case RotateProfile.RotateMode.From:
+                case VectorMode.From:
                     from = rotateProfile.ApplyAxisExclusion(
                         originalRotation * rotateProfile.RotateFactor,
                         originalRotation
@@ -37,12 +37,20 @@ namespace TweeningComponents.Calculators
                     to = originalRotation;
                     break;
 
-                case RotateProfile.RotateMode.To:
+                case VectorMode.To:
                     from = originalRotation;
                     to = rotateProfile.ApplyAxisExclusion(rotateProfile.TargetRotation, originalRotation);
                     break;
 
-                case RotateProfile.RotateMode.By:
+                case VectorMode.By:
+                    from = originalRotation;
+                    to = rotateProfile.ApplyAxisExclusion(
+                        originalRotation * rotateProfile.RotateFactor,
+                        originalRotation
+                    );
+                    break;
+
+                case VectorMode.Offset:
                     from = originalRotation;
                     to = rotateProfile.ApplyAxisExclusion(
                         originalRotation + rotateProfile.TargetRotation,
@@ -68,12 +76,16 @@ namespace TweeningComponents.Calculators
         {
             Vector3 to = rotateProfile.Mode switch
             {
-                RotateProfile.RotateMode.From => rotateProfile.ApplyAxisExclusion(
+                VectorMode.From => rotateProfile.ApplyAxisExclusion(
                     originalRotation * rotateProfile.RotateFactor,
                     originalRotation
                 ),
-                RotateProfile.RotateMode.To => originalRotation,
-                RotateProfile.RotateMode.By => originalRotation,
+                VectorMode.To => originalRotation,
+                VectorMode.By => originalRotation,
+                VectorMode.Offset => rotateProfile.ApplyAxisExclusion(
+                    originalRotation + rotateProfile.TargetRotation,
+                    originalRotation
+                ),
                 _ => originalRotation,
             };
 
