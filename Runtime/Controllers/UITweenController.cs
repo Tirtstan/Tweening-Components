@@ -100,7 +100,7 @@ namespace TweeningComponents.Controllers
             Sequence replaySequence = DOTween.Sequence();
             replaySequence.SetUpdate(config.useUnscaledTime);
 
-            Sequence outSequence = AnimateOut();
+            Sequence outSequence = AnimateOut().OnComplete(null);
             replaySequence.Append(outSequence);
             replaySequence.AppendCallback(() => AnimateIn());
 
