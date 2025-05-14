@@ -16,5 +16,8 @@ namespace TweeningComponents
 
         [Tooltip("Whether elements will exit in reverse order compared to their entrance sequence.")]
         public bool reverseOrderOnExit;
+
+        [Tooltip("Whether to allow the tween to complete when the tween/sequence is killed.")]
+        public bool allowCompleteOnKill;
     }
 }
