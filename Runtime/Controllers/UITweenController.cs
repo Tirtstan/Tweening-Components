@@ -124,8 +124,8 @@ namespace TweeningComponents.Controllers
 
         private void KillTweens()
         {
-            showSequence?.Kill();
-            hideSequence?.Kill();
+            showSequence?.Kill(config.allowCompleteOnKill);
+            hideSequence?.Kill(config.allowCompleteOnKill);
         }
 
         public void FillTargetsWithChildren()
