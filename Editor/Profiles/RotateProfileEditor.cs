@@ -6,7 +6,7 @@ using TweeningComponents.Profiles;
 namespace TweeningComponents.Editor
 {
     [CustomEditor(typeof(RotateProfile))]
-    public class RotateProfileEditor : Vector3TweenProfileEditor
+    public sealed class RotateProfileEditor : Vector3TweenProfileEditor
     {
         protected override void DrawAdditionalProperties()
         {

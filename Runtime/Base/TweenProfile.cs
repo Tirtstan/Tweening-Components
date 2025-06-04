@@ -19,6 +19,13 @@ namespace TweeningComponents.Profiles
         public Ease EaseOut = Ease.OutExpo;
         public float DelayOut;
 
+        [Header("Looping")]
+        public bool LoopAnimationIn;
+
+        [Tooltip("Number of times to loop the animation. -1 means infinite loop.")]
+        public int LoopCount = -1;
+        public LoopType LoopType = LoopType.Restart;
+
         public abstract TweenCalculator CreateCalculator(RectTransform rectTransform);
     }
 }

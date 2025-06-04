@@ -26,35 +26,25 @@ namespace TweeningComponents.Calculators
 
         private void CalculateTargetPosition()
         {
-            if (moveProfile.Mode == MoveProfile.MoveMode.Direction)
+            targetPosition = moveProfile.Mode switch
             {
-                bool isXAxis = IsXAxis(moveProfile.Direction);
-                int directionValue = GetDirectionValue(moveProfile.Direction);
+                MoveProfile.MoveMode.Direction => CalculateDirectionalPosition(),
+                MoveProfile.MoveMode.Position => moveProfile.PositionAmount,
+                MoveProfile.MoveMode.OffsetPosition => originalPosition + (Vector2)moveProfile.PositionAmount,
+                _ => originalPosition
+            };
+        }
 
-                if (isXAxis)
-                {
-                    targetPosition = new Vector2(
-                        originalPosition.x
-                            + directionValue * rectTransform.sizeDelta.x * moveProfile.DistanceMultiplier,
-                        originalPosition.y
-                    );
-                }
-                else
-                {
-                    targetPosition = new Vector2(
-                        originalPosition.x,
-                        originalPosition.y + directionValue * rectTransform.sizeDelta.y * moveProfile.DistanceMultiplier
-                    );
-                }
-            }
-            else if (moveProfile.Mode == MoveProfile.MoveMode.Position)
-            {
-                targetPosition = moveProfile.PositionAmount;
-            }
-            else if (moveProfile.Mode == MoveProfile.MoveMode.OffsetPosition)
-            {
-                targetPosition = originalPosition + (Vector2)moveProfile.PositionAmount;
-            }
+        private Vector2 CalculateDirectionalPosition()
+        {
+            bool isXAxis = IsXAxis(moveProfile.Direction);
+            int directionValue = GetDirectionValue(moveProfile.Direction);
+            float distance =
+                (isXAxis ? rectTransform.sizeDelta.x : rectTransform.sizeDelta.y) * moveProfile.DistanceMultiplier;
+
+            return isXAxis
+                ? new Vector2(originalPosition.x + directionValue * distance, originalPosition.y)
+                : new Vector2(originalPosition.x, originalPosition.y + directionValue * distance);
         }
 
         private bool IsXAxis(TweenDirection direction) =>
@@ -64,49 +54,49 @@ namespace TweeningComponents.Calculators
 
         public override Tween CreateAnimateInTween()
         {
-            Vector2 from;
-            Vector2 to;
-
-            switch (moveProfile.Mode)
-            {
-                case MoveProfile.MoveMode.Direction:
-                    from = targetPosition;
-                    to = originalPosition;
-                    break;
-
-                case MoveProfile.MoveMode.Position:
-                case MoveProfile.MoveMode.OffsetPosition:
-                    from = originalPosition;
-                    to = targetPosition;
-                    break;
-
-                default:
-                    from = originalPosition;
-                    to = originalPosition;
-                    break;
-            }
-
+            (Vector2 from, Vector2 to) = GetMoveValues();
             rectTransform.anchoredPosition = from;
-            return rectTransform
+
+            Tween tween = rectTransform
                 .DOAnchorPos(to, moveProfile.TimeIn)
                 .SetEase(moveProfile.EaseIn)
                 .SetDelay(moveProfile.DelayIn);
+
+            if (moveProfile.LoopAnimationIn)
+                tween.SetLoops(moveProfile.LoopCount, moveProfile.LoopType);
+
+            return tween;
         }
 
         public override Tween CreateAnimateOutTween()
         {
-            Vector2 to = moveProfile.Mode switch
-            {
-                MoveProfile.MoveMode.Direction => targetPosition,
-                MoveProfile.MoveMode.Position => originalPosition,
-                MoveProfile.MoveMode.OffsetPosition => originalPosition,
-                _ => originalPosition,
-            };
+            Vector2 to = GetAnimateOutTarget();
 
             return rectTransform
                 .DOAnchorPos(to, moveProfile.TimeOut)
                 .SetEase(moveProfile.EaseOut)
                 .SetDelay(moveProfile.DelayOut);
+        }
+
+        private (Vector2 from, Vector2 to) GetMoveValues()
+        {
+            return moveProfile.Mode switch
+            {
+                MoveProfile.MoveMode.Direction => (targetPosition, originalPosition),
+                MoveProfile.MoveMode.Position
+                or MoveProfile.MoveMode.OffsetPosition
+                    => (originalPosition, targetPosition),
+                _ => (originalPosition, originalPosition)
+            };
+        }
+
+        private Vector2 GetAnimateOutTarget()
+        {
+            return moveProfile.Mode switch
+            {
+                MoveProfile.MoveMode.Direction => targetPosition,
+                _ => originalPosition
+            };
         }
     }
 }

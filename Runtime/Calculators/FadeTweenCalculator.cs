@@ -49,50 +49,39 @@ namespace TweeningComponents.Calculators
 
             SetAlpha(from);
 
-            if (canvasGroup != null)
+            Tween tween = CreateFadeTween(to, fadeProfile.TimeIn);
+
+            if (tween != null)
             {
-                return canvasGroup
-                    .DOFade(to, fadeProfile.TimeIn)
-                    .SetEase(fadeProfile.EaseIn)
-                    .SetDelay(fadeProfile.DelayIn);
-            }
-            else if (image != null)
-            {
-                return image.DOFade(to, fadeProfile.TimeIn).SetEase(fadeProfile.EaseIn).SetDelay(fadeProfile.DelayIn);
-            }
-            else if (tmpText != null)
-            {
-                return tmpText.DOFade(to, fadeProfile.TimeIn).SetEase(fadeProfile.EaseIn).SetDelay(fadeProfile.DelayIn);
+                tween.SetEase(fadeProfile.EaseIn).SetDelay(fadeProfile.DelayIn);
+                if (fadeProfile.LoopAnimationIn)
+                    tween.SetLoops(fadeProfile.LoopCount, fadeProfile.LoopType);
             }
 
-            return null;
+            return tween;
         }
 
         public override Tween CreateAnimateOutTween()
         {
             float to = fadeProfile.FromAlpha;
+            Tween tween = CreateFadeTween(to, fadeProfile.TimeOut);
 
+            if (tween != null)
+                tween.SetEase(fadeProfile.EaseOut).SetDelay(fadeProfile.DelayOut);
+
+            return tween;
+        }
+
+        private Tween CreateFadeTween(float targetAlpha, float duration)
+        {
             if (canvasGroup != null)
-            {
-                return canvasGroup
-                    .DOFade(to, fadeProfile.TimeOut)
-                    .SetEase(fadeProfile.EaseOut)
-                    .SetDelay(fadeProfile.DelayOut);
-            }
-            else if (image != null)
-            {
-                return image
-                    .DOFade(to, fadeProfile.TimeOut)
-                    .SetEase(fadeProfile.EaseOut)
-                    .SetDelay(fadeProfile.DelayOut);
-            }
-            else if (tmpText != null)
-            {
-                return tmpText
-                    .DOFade(to, fadeProfile.TimeOut)
-                    .SetEase(fadeProfile.EaseOut)
-                    .SetDelay(fadeProfile.DelayOut);
-            }
+                return canvasGroup.DOFade(targetAlpha, duration);
+
+            if (image != null)
+                return image.DOFade(targetAlpha, duration);
+
+            if (tmpText != null)
+                return tmpText.DOFade(targetAlpha, duration);
 
             return null;
         }

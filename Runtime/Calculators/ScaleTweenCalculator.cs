@@ -24,66 +24,66 @@ namespace TweeningComponents.Calculators
 
         public override Tween CreateAnimateInTween()
         {
-            Vector3 from;
-            Vector3 to;
-
-            switch (scaleProfile.Mode)
-            {
-                case VectorMode.From:
-                    from = scaleProfile.ApplyAxisExclusion(originalScale * scaleProfile.ScaleFactor, originalScale);
-                    to = originalScale;
-                    break;
-
-                case VectorMode.To:
-                    from = originalScale;
-                    to = scaleProfile.ApplyAxisExclusion(scaleProfile.TargetScale, originalScale);
-                    break;
-
-                case VectorMode.By:
-                    from = originalScale;
-                    to = scaleProfile.ApplyAxisExclusion(originalScale * scaleProfile.ScaleFactor, originalScale);
-                    break;
-
-                case VectorMode.Offset:
-                    from = originalScale;
-                    to = scaleProfile.ApplyAxisExclusion(originalScale + scaleProfile.TargetScale, originalScale);
-                    break;
-
-                default:
-                    from = originalScale;
-                    to = originalScale;
-                    break;
-            }
+            (Vector3 from, Vector3 to) = GetScaleValues();
 
             rectTransform.localScale = from;
 
-            return rectTransform
+            Tween tween = rectTransform
                 .DOScale(to, scaleProfile.TimeIn)
                 .SetEase(scaleProfile.EaseIn)
                 .SetDelay(scaleProfile.DelayIn);
+
+            if (scaleProfile.LoopAnimationIn)
+                tween.SetLoops(scaleProfile.LoopCount, scaleProfile.LoopType);
+
+            return tween;
         }
 
         public override Tween CreateAnimateOutTween()
         {
-            Vector3 to = scaleProfile.Mode switch
-            {
-                VectorMode.From => scaleProfile.ApplyAxisExclusion(
-                    originalScale * scaleProfile.ScaleFactor,
-                    originalScale
-                ),
-                VectorMode.To => originalScale,
-                VectorMode.By => originalScale,
-                VectorMode.Offset => scaleProfile.ApplyAxisExclusion(
-                    originalScale + scaleProfile.TargetScale,
-                    originalScale
-                ),
-                _ => originalScale,
-            };
+            Vector3 to = GetAnimateOutTarget();
 
             return rectTransform
                 .DOScale(to, scaleProfile.TimeOut)
                 .SetEase(scaleProfile.EaseOut)
                 .SetDelay(scaleProfile.DelayOut);
+        }
+
+        private (Vector3 from, Vector3 to) GetScaleValues()
+        {
+            return scaleProfile.Mode switch
+            {
+                VectorMode.From
+                    => (
+                        scaleProfile.ApplyAxisExclusion(originalScale * scaleProfile.ScaleFactor, originalScale),
+                        originalScale
+                    ),
+                VectorMode.To
+                    => (originalScale, scaleProfile.ApplyAxisExclusion(scaleProfile.TargetScale, originalScale)),
+                VectorMode.By
+                    => (
+                        originalScale,
+                        scaleProfile.ApplyAxisExclusion(originalScale * scaleProfile.ScaleFactor, originalScale)
+                    ),
+                VectorMode.Offset
+                    => (
+                        originalScale,
+                        scaleProfile.ApplyAxisExclusion(originalScale + scaleProfile.TargetScale, originalScale)
+                    ),
+                _ => (originalScale, originalScale)
+            };
+        }
+
+        private Vector3 GetAnimateOutTarget()
+        {
+            return scaleProfile.Mode switch
+            {
+                VectorMode.From
+                    => scaleProfile.ApplyAxisExclusion(originalScale * scaleProfile.ScaleFactor, originalScale),
+                VectorMode.Offset
+                    => scaleProfile.ApplyAxisExclusion(originalScale + scaleProfile.TargetScale, originalScale),
+                _ => originalScale
+            };
         }
     }
 }

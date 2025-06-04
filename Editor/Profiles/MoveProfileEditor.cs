@@ -6,7 +6,7 @@ using TweeningComponents.Profiles;
 namespace TweeningComponents.Editor
 {
     [CustomEditor(typeof(MoveProfile))]
-    public class MoveProfileEditor : TweenProfileEditor
+    public sealed class MoveProfileEditor : TweenProfileEditor
     {
         protected override void DrawAdditionalProperties()
         {
