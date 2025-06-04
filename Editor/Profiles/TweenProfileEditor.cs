@@ -1,9 +1,11 @@
 #if UNITY_EDITOR
+using TweeningComponents.Profiles;
 using UnityEditor;
 using UnityEngine;
 
 namespace TweeningComponents.Editor
 {
+    [CustomEditor(typeof(TweenProfile), true)]
     public abstract class TweenProfileEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
@@ -22,6 +24,22 @@ namespace TweeningComponents.Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("TimeOut"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("EaseOut"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("DelayOut"));
+
+            DrawLoopingProperties();
+        }
+
+        private void DrawLoopingProperties()
+        {
+            var loopAnimationProperty = serializedObject.FindProperty("LoopAnimationIn");
+            EditorGUILayout.PropertyField(loopAnimationProperty);
+
+            if (loopAnimationProperty.boolValue)
+            {
+                EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("LoopCount"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("LoopType"));
+                EditorGUI.indentLevel--;
+            }
         }
 
         protected abstract void DrawAdditionalProperties();

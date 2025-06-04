@@ -6,7 +6,7 @@ using TweeningComponents.Profiles;
 namespace TweeningComponents.Editor
 {
     [CustomEditor(typeof(ScaleProfile))]
-    public class ScaleProfileEditor : Vector3TweenProfileEditor
+    public sealed class ScaleProfileEditor : Vector3TweenProfileEditor
     {
         protected override void DrawAdditionalProperties()
         {
