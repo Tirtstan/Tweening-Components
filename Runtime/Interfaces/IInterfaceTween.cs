@@ -25,5 +25,11 @@ namespace TweeningComponents
         /// </summary>
         /// <returns>The used tweening sequence.</returns>
         public Sequence Replay();
+
+        /// <summary>
+        /// Sets the active state of this element.
+        /// </summary>
+        /// <remarks>Useful for holding references to this interface in other components, allowing disabling without a <see cref="MonoBehaviour"/>.</remarks>
+        public void SetActive(bool active);
     }
 }

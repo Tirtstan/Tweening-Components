@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 156e9c8a805f445b8b221d67c8f16020, type: 3}
+  m_Name: Italic Text Loop
+  m_EditorClassIdentifier: 
+  TimeIn: 1
+  EaseIn: 3
+  DelayIn: 0
+  TimeOut: 1
+  EaseOut: 3
+  DelayOut: 0
+  LoopAnimationIn: 1
+  LoopCount: 999
+  LoopType: 1
+  excludeX: 0
+  excludeY: 0
+  excludeZ: 1
+  Mode: 1
+  TargetRotation: {x: 28, y: 28, z: 0}
+  RotateFactor: 0.5
+  TweenRotateMode: 1

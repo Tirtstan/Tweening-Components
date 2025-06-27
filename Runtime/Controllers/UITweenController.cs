@@ -74,10 +74,9 @@ namespace TweeningComponents.Controllers
             return showSequence;
         }
 
-        public virtual Sequence AnimateOut()
+        private Sequence CreateAnimateOutSequence()
         {
-            KillTweens();
-            hideSequence = DOTween.Sequence();
+            Sequence sequence = DOTween.Sequence();
             int count = groupedCalculators.Count;
 
             for (int i = 0; i < count; i++)
@@ -87,10 +86,18 @@ namespace TweeningComponents.Controllers
                 foreach (var calc in groupedCalculators[index])
                     targetSeq.Join(calc.CreateAnimateOutTween());
 
-                hideSequence.Insert(i * config.elementDelay, targetSeq);
+                sequence.Insert(i * config.elementDelay, targetSeq);
             }
 
-            hideSequence.SetUpdate(config.useUnscaledTime).OnComplete(OnHideComplete);
+            sequence.SetUpdate(config.useUnscaledTime);
+            return sequence;
+        }
+
+        public virtual Sequence AnimateOut()
+        {
+            KillTweens();
+            hideSequence = CreateAnimateOutSequence();
+            hideSequence.OnComplete(OnHideComplete);
             return hideSequence;
         }
 
@@ -100,11 +107,17 @@ namespace TweeningComponents.Controllers
             Sequence replaySequence = DOTween.Sequence();
             replaySequence.SetUpdate(config.useUnscaledTime);
 
-            Sequence outSequence = AnimateOut().OnComplete(null);
+            Sequence outSequence = CreateAnimateOutSequence(); // sequence without the OnHideComplete callback
             replaySequence.Append(outSequence);
             replaySequence.AppendCallback(() => AnimateIn());
 
             return replaySequence;
+        }
+
+        public void SetActive(bool active)
+        {
+            if (gameObject.activeSelf != active)
+                gameObject.SetActive(active);
         }
 
         protected virtual void OnHideComplete()
@@ -128,7 +141,7 @@ namespace TweeningComponents.Controllers
             hideSequence?.Kill(config.allowCompleteOnKill);
         }
 
-        public void FillTargetsWithChildren()
+        public void FillTargetsWithChildren() // called by editor tools only
         {
             List<RectTransform> children = new();
             for (int i = 0; i < transform.childCount; i++)

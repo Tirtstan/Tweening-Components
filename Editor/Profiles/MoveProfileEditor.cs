@@ -29,8 +29,8 @@ namespace TweeningComponents.Editor
                 case MoveProfile.MoveMode.Position:
                 case MoveProfile.MoveMode.OffsetPosition:
                     EditorGUILayout.PropertyField(
-                        serializedObject.FindProperty("PositionAmount"),
-                        new GUIContent("Position Amount")
+                        serializedObject.FindProperty("TargetPosition"),
+                        new GUIContent("Target Position")
                     );
                     break;
             }
