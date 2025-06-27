@@ -56,4 +56,4 @@ In your Project tab, `Right Click > Create > Tweening`.
 
 ## Samples
 
-Tweening Components provides a Example scene in the Samples tab!
+Tweening Components provides an Example scene in the Samples tab (or `Samples`)!
