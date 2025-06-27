@@ -8,26 +8,26 @@ namespace TweeningComponents.Profiles
     {
         public enum MoveMode
         {
-            /// <summary>
-            /// Move towards a direction based on its size.
-            /// </summary>
+            [Tooltip("Move in a specific direction.")]
             Direction = 0,
 
-            /// <summary>
-            /// Move to a specific position.
-            /// </summary>
+            [Tooltip("Move to a specific position.")]
             Position = 1,
 
-            /// <summary>
-            /// Move to a position offset from its initial position.
-            /// </summary>
+            [Tooltip("Move to a position offset from its initial position.")]
             OffsetPosition = 2,
         }
 
         [Header("Move Configs")]
         public MoveMode Mode = MoveMode.Direction;
+
+        [Tooltip("The direction the tween will move towards.")]
         public TweenDirection Direction = TweenDirection.Right;
-        public Vector3 PositionAmount = Vector3.zero;
+        public Vector3 TargetPosition = Vector3.zero;
+
+        [Tooltip(
+            "Multiplier for the distance to move and initially start at based on the tween direction. Use 1 for the full distance, 0.5 for half the distance, etc."
+        )]
         public float DistanceMultiplier = 1f;
 
         public override TweenCalculator CreateCalculator(RectTransform rectTransform) =>

@@ -1,10 +1,13 @@
 {
     "name": "com.tirt.tweeningcomponents",
-    "version": "3.4.0",
+    "version": "3.5.0",
     "displayName": "Tweening Components",
-    "description": "Powered by DOTween. Tweening Components is a package that provides a set of components to animate UGUI in Unity.",
+    "description": "Powered by DOTween. Tweening Components is a package that provides a set of preset scriptable objects to animate UGUI in Unity.",
     "unity": "2019.4",
     "unityRelease": "0f1",
+    "documentationUrl": "https://github.com/Tirtstan/Tweening-Components/blob/main/README.md",
+    "changelogUrl": "https://github.com/Tirtstan/Tweening-Components/releases/latest",
+    "licensesUrl": "https://github.com/Tirtstan/Tweening-Components/blob/main/LICENSE.md",
     "keywords": [
         "tween",
         "DOTween",
@@ -16,5 +19,12 @@
     "author": {
         "name": "Tirt",
         "url": "https://github.com/Tirtstan"
-    }
+    },
+    "samples": [
+        {
+            "displayName": "Examples",
+            "description": "Contains examples for how to use the Tween Components package.",
+            "path": "Samples/Examples"
+        }
+    ]
 }

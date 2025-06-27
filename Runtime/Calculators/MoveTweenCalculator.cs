@@ -29,8 +29,8 @@ namespace TweeningComponents.Calculators
             targetPosition = moveProfile.Mode switch
             {
                 MoveProfile.MoveMode.Direction => CalculateDirectionalPosition(),
-                MoveProfile.MoveMode.Position => moveProfile.PositionAmount,
-                MoveProfile.MoveMode.OffsetPosition => originalPosition + (Vector2)moveProfile.PositionAmount,
+                MoveProfile.MoveMode.Position => moveProfile.TargetPosition,
+                MoveProfile.MoveMode.OffsetPosition => originalPosition + (Vector2)moveProfile.TargetPosition,
                 _ => originalPosition
             };
         }

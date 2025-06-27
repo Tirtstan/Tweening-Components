@@ -20,6 +20,7 @@ namespace TweeningComponents.Profiles
         public float DelayOut;
 
         [Header("Looping")]
+        [Tooltip("Whether the animation-in sequence will loop when it ends.")]
         public bool LoopAnimationIn;
 
         [Tooltip("Number of times to loop the animation. -1 means infinite loop.")]
